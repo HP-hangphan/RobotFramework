@@ -1,5 +1,6 @@
 # RobotFramework
 ## Viết 1 chương trình bằng robotframework:
+
 [] có thể tạo user + customer
 [] verify lại thông tin customer / user vừa tạo.
 [] Thông tin customer và user lưu vào trong file yaml
