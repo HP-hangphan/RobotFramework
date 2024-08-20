@@ -1,0 +1,4 @@
+hackedit==1.0a2
+hackedit-cobol==1.0a2
+OpenCobolIDE==4.7.6
+robotframework==7.0.1
