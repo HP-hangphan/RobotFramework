@@ -8,6 +8,7 @@ def read_csv_file(file_path):
     with open(file_path, mode="r", encoding="utf-8", newline="") as f:
         reader = csv.DictReader(f)
         customers = [row for row in reader]
+        print(type(customers))
         return customers
 
 
@@ -26,43 +27,39 @@ def pattern_name(name: str):
     assert name_pattern.match(name)
 
 
-def check_name(data: Union[list, dict], keys: list):
+def check_name(data: Union[list, dict], key: str):
     if isinstance(data, dict):
-        for key in keys:
-            pattern_name(data.get(key))
+        pattern_name(data.get(key))
     elif isinstance(data, list):
         for row in data:
-            check_name(row, keys)
+            check_name(row, key)
 
 
-def check_username(data: Union[list, dict], keys: list):
+def check_username(data: Union[list, dict], key: str):
     username_pattern = re.compile(r"^[a-zA-Z0-9_]{3,15}$")
     if isinstance(data, dict):
-        for key in keys:
-            assert username_pattern.match(data.get(key))
+        assert username_pattern.match(data.get(key))
     elif isinstance(data, list):
         for row in data:
-            check_username(row, keys)
+            check_username(row, key)
 
 
-def check_email(data: Union[list, dict], keys: list):
+def check_email(data: Union[list, dict], key: str):
     email_pattern = re.compile(r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$")
     if isinstance(data, dict):
-        for key in keys:
-            assert email_pattern.match(data.get(key))
+        assert email_pattern.match(data.get(key))
     elif isinstance(data, list):
         for row in data:
-            check_email(row, keys)
+            check_email(row, key)
 
 
-def check_password(data: Union[list, dict], keys: list[str]):
+def check_password(data: Union[list, dict], key: str):
     password_pattern = re.compile(r"[A-Za-z0-9@#$%^&+=]{8,}")
     if isinstance(data, dict):
-        for key in keys:
-            assert password_pattern.match(data.get(key))
+        assert password_pattern.match(data.get(key))
     elif isinstance(data, list):
         for row in data:
-            check_password(row, keys)
+            check_password(row, key)
 
 
 def check_phone_number(data: Union[list, dict], keys: list):
@@ -85,29 +82,25 @@ def check_properties(data: Union[list, dict], required_key: list[str]):
             check_properties(item, required_key)
 
 
-def check_user_created(data: Union[dict, list], keys: list, yaml_file) -> bool:
+def check_user_created(data: Union[dict, list], key: str, yaml_file) -> bool:
     try:
         users = read_yaml_file(yaml_file)
     except FileNotFoundError:
         return False
-
     if not isinstance(users, list):
         raise ValueError("Existing data in YAML file is not a list.")
-
     for user in users:
-        if isinstance(user, dict) and all(
-            user.get(key) == data.get(key) for key in keys
-        ):
-            print(f"User with {', '.join(keys)} already exists.")
+        if isinstance(user, dict) and user.get(key) == data.get(key):
+            print(f"User with {', '.join(key)} already exists.")
             return True
     return False
 
 
-def create_data_from_csv(csv_file, yaml_file, keys: list):
+def create_data_from_csv(csv_file, yaml_file, key: str):
     new_users = []
     reader = read_csv_file(csv_file)
     for row in reader:
-        if not check_user_created(row, keys, yaml_file):
+        if not check_user_created(row, key, yaml_file):
             new_users.append(row)
         else:
             print(f"User already exists. Skipping creation.")
@@ -116,6 +109,7 @@ def create_data_from_csv(csv_file, yaml_file, keys: list):
             existing_users = read_yaml_file(yaml_file)
         except FileNotFoundError:
             existing_users = []
+            existing_users.extend(new_users)
             write_file(existing_users + new_users, yaml_file)
             print("New users created successfully.")
     else:
