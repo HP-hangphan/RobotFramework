@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 5.0.1 (Python 3.10.12 on darwin)" generated="20240822 10:58:08.683" rpa="false" schemaversion="3">
+<suite id="s1" name="CreateAndValidateUser" source="/Users/dino/Desktop/RobotFramework/resources/CreateAndValidateUser.robot">
+<test id="s1-t1" name="Create user" line="11">
+<kw name="Log To Console" library="BuiltIn">
+<arg>Creating a new instance of the Customer class</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" starttime="20240822 10:58:08.793" endtime="20240822 10:58:08.797"/>
+</kw>
+<kw name="Read Csv File from path">
+<arg>${CSV_FILE_USER}</arg>
+<kw name="Log To Console" library="BuiltIn">
+<arg>Reading CSV file: ${file_path}</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" starttime="20240822 10:58:08.802" endtime="20240822 10:58:08.805"/>
+</kw>
+<kw name="Read Csv File" library="utils">
+<var>${data}</var>
+<arg>${file_path}</arg>
+<msg timestamp="20240822 10:58:08.811" level="INFO">${data} = [{'Username': 'Admin', 'Password': '11111119', 'Email': 'admin123@gmail.com'}, {'Username': 'Username1', 'Password': '123456789', 'Email': 'user123@gmail.com'}]</msg>
+<status status="PASS" starttime="20240822 10:58:08.807" endtime="20240822 10:58:08.814"/>
+</kw>
+<status status="PASS" starttime="20240822 10:58:08.798" endtime="20240822 10:58:08.816"/>
+</kw>
+<kw name="Verify data before write to yaml">
+<arg>${CSV_FILE_USER}</arg>
+<arg>@{KEYS}</arg>
+<kw name="Read Csv File" library="utils">
+<var>${data}</var>
+<arg>${file_path}</arg>
+<msg timestamp="20240822 10:58:08.821" level="INFO">${data} = [{'Username': 'Admin', 'Password': '11111119', 'Email': 'admin123@gmail.com'}, {'Username': 'Username1', 'Password': '123456789', 'Email': 'user123@gmail.com'}]</msg>
+<status status="PASS" starttime="20240822 10:58:08.820" endtime="20240822 10:58:08.822"/>
+</kw>
+<kw name="Log To Console" library="BuiltIn">
+<arg>['${keys[1]}']</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" starttime="20240822 10:58:08.823" endtime="20240822 10:58:08.827"/>
+</kw>
+<kw name="Check Password" library="utils">
+<arg>${data}</arg>
+<arg>['${keys[1]}']</arg>
+<status status="PASS" starttime="20240822 10:58:08.829" endtime="20240822 10:58:08.843"/>
+</kw>
+<status status="PASS" starttime="20240822 10:58:08.818" endtime="20240822 10:58:08.845"/>
+</kw>
+<status status="PASS" starttime="20240822 10:58:08.790" endtime="20240822 10:58:08.846"/>
+</test>
+<status status="PASS" starttime="20240822 10:58:08.692" endtime="20240822 10:58:08.849"/>
+</suite>
+<statistics>
+<total>
+<stat pass="1" fail="0" skip="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat pass="1" fail="0" skip="0" id="s1" name="CreateAndValidateUser">CreateAndValidateUser</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>
