@@ -133,10 +133,12 @@ def create_user(user: Union[list, dict]):
 
 def check_user_information(user: dict):
     if not config.BASE_USER.keys() == user.keys():
-        raise Exception("Input user [{}] doesn't match format with database".format(user))
+        raise Exception(
+            "Input user [{}] doesn't match format with database".format(user)
+        )
     if is_user_exists(user):
         logger.info("User [{}] already exists".format(user), also_console=True)
-        return False 
+        return False
     check_username(user.get("Username"))
     check_password(user.get("Password"))
     check_email(user.get("Email"))
