@@ -1,5 +1,5 @@
 *** Settings ***
-Resource    ../testsuite/test_suite_CreateAndValidateUser.robot
+Resource    ../tests/create_and_validate_user_tests.robot
 
 
 *** Keywords ***
