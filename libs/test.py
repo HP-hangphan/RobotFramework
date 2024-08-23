@@ -4,25 +4,33 @@ import os
 import yaml
 
 sys.path.insert(0, os.path.join(os.getcwd(), "data"))
-import config
-from properties import required_fields_customer, required_fields_user
+# import config
+# from properties import required_fields_customer, required_fields_user
 
-file1 = config.DEFAULT_FILE_CSV_USER
-file = config.DEFAULT_FILE_CSV_CUSTOMER
+# file1 = config.DEFAULT_FILE_CSV_USER
+# file = config.DEFAULT_FILE_CSV_CUSTOMER
 
-user = utils.read_csv_file(file1)
-customer = utils.read_csv_file(file)
-print(customer)
+# user = utils.read_csv_file(file1)
+# customer = utils.read_csv_file(file)
+# print(customer)
 
 
-print(user)
+# print(user)
 
-new_user_data = {
-    "FirstName": "John",
-    "LastName": "Doe",
-    "Email": "john.doe@example.com",
-    "Phone": "0987654321",
+# new_user_data = {
+#     "FirstName": "John",
+#     "LastName": "Doe",
+#     "Email": "john.doe@example.com",
+#     "Phone": "0987654321",
+# }
+
+new_user_data2 = {
+    "Username": "John1",
+    "Password": "Doe",
+    "Email": "john.doe2@example.com",
 }
+
+utils.create_user(new_user_data2)
 
 # utils.check_name(customer, "FirstName")
 # utils.check_phone_number(customer, ["Phone"])

@@ -3,6 +3,14 @@ import yaml
 import csv
 from typing import Union
 import os
+import sys
+from robot.api import logger
+
+dir_name = os.path.dirname(__file__).replace("libs", "")
+if dir_name not in sys.path:
+    sys.path.append(dir_name)
+
+from data import config
 
 
 def read_csv_file(file_path):
@@ -19,6 +27,11 @@ def read_yaml_file(file_path):
 
 def write_file(data, file_yaml):
     with open(file_yaml, mode="w", encoding="utf-8") as file:
+        yaml.dump(data, file, default_flow_style=False)
+
+
+def write_yaml(data, file_path):
+    with open(file_path, mode="w", encoding="utf-8") as file:
         yaml.dump(data, file, default_flow_style=False)
 
 
@@ -43,31 +56,19 @@ def check_lastname(data: Union[list, dict], key: str):
             check_lastname(row, key)
 
 
-def check_username(data: Union[list, dict], key: str):
+def check_username(username: str):
     username_pattern = re.compile(r"^[a-zA-Z0-9_]{3,15}$")
-    if isinstance(data, dict):
-        assert username_pattern.match(data.get(key))
-    elif isinstance(data, list):
-        for row in data:
-            check_username(row, key)
+    assert username_pattern.match(username)
 
 
-def check_email(data: Union[list, dict], key: str):
+def check_email(email: str):
     email_pattern = re.compile(r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$")
-    if isinstance(data, dict):
-        assert email_pattern.match(data.get(key))
-    elif isinstance(data, list):
-        for row in data:
-            check_email(row, key)
+    assert email_pattern.match(email)
 
 
-def check_password(data: Union[list, dict], key: str):
+def check_password(password: str):
     password_pattern = re.compile(r"[A-Za-z0-9@#$%^&+=]{8,}")
-    if isinstance(data, dict):
-        assert password_pattern.match(data.get(key))
-    elif isinstance(data, list):
-        for row in data:
-            check_password(row, key)
+    assert password_pattern.match(password)
 
 
 def check_phone(data: Union[list, dict], key: str):
@@ -89,35 +90,54 @@ def check_properties(data: Union[list, dict], required_key: list[str]):
             check_properties(item, required_key)
 
 
-def check_user_created(data: Union[dict, list], key: str, yaml_file) -> bool:
-    try:
-        users = read_yaml_file(yaml_file)
-    except FileNotFoundError:
-        return False
-    if not isinstance(users, list):
-        raise ValueError("Existing data in YAML file is not a list.")
-    for user in users:
-        if isinstance(user, dict) and user.get(key) == data.get(key):
-            print(f"User with {', '.join(key)} already exists.")
+def is_user_exists(user: dict):
+    users = read_yaml_file(config.DEFAULT_FILE_YAML_USER)
+    if isinstance(user, dict):
+        is_exist = [
+            _user
+            for _user in users
+            if user.get("Username") == user.get("Username")
+            or user.get("Email") == user.get("Email")
+        ]
+        if is_exist:
             return True
-    return False
 
 
-def create_data_from_csv(csv_file, yaml_file, key: str):
-    new_users = []
-    reader = read_csv_file(csv_file)
-    for row in reader:
-        if not check_user_created(row, key, yaml_file):
-            new_users.append(row)
-        else:
-            print(f"User already exists. Skipping creation.")
-    if new_users:
-        try:
-            existing_users = read_yaml_file(yaml_file)
-        except FileNotFoundError:
-            existing_users = []
-            existing_users.extend(new_users)
-            write_file(existing_users + new_users, yaml_file)
-            print("New users created successfully.")
-    else:
-        print("No new users to create.")
+def is_user_created(user: Union[dict, list]) -> bool:
+    users = read_yaml_file(config.DEFAULT_FILE_YAML_USER)
+    if isinstance(user, dict):
+        return user in users
+    elif isinstance(user, list):
+        for user in users:
+            if user not in users:
+                return False
+        return True
+
+
+def create_user(user: Union[list, dict]):
+    users = read_yaml_file(config.DEFAULT_FILE_YAML_USER)
+    if isinstance(user, dict):
+        if check_user_information(user):
+            users.append(user)
+            logger.info("User [{}] was created".format(user), also_console=True)
+    elif isinstance(user, list):
+        created = []
+        for _user in user:
+            if check_user_information(_user):
+                created.append(_user)
+        if created:
+            users.extend(created)
+            logger.info("Users [{}] were created".format(created), also_console=True)
+    write_yaml(users, config.DEFAULT_FILE_YAML_USER)
+
+
+def check_user_information(user: dict):
+    if not config.BASE_USER.keys() == user.keys():
+        raise Exception("Input user [{}] doesn't match format with database".format(user))
+    if is_user_exists(user):
+        logger.info("User [{}] already exists".format(user), also_console=True)
+        return False 
+    check_username(user.get("Username"))
+    check_password(user.get("Password"))
+    check_email(user.get("Email"))
+    return True
