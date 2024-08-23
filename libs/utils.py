@@ -2,13 +2,13 @@ import re
 import yaml
 import csv
 from typing import Union
+import os
 
 
 def read_csv_file(file_path):
     with open(file_path, mode="r", encoding="utf-8", newline="") as f:
         reader = csv.DictReader(f)
         customers = [row for row in reader]
-        print(type(customers))
         return customers
 
 
@@ -27,12 +27,20 @@ def pattern_name(name: str):
     assert name_pattern.match(name)
 
 
-def check_name(data: Union[list, dict], key: str):
+def check_firstname(data: Union[list, dict], key: str):
     if isinstance(data, dict):
         pattern_name(data.get(key))
     elif isinstance(data, list):
         for row in data:
-            check_name(row, key)
+            check_firstname(row, key)
+
+
+def check_lastname(data: Union[list, dict], key: str):
+    if isinstance(data, dict):
+        pattern_name(data.get(key))
+    elif isinstance(data, list):
+        for row in data:
+            check_lastname(row, key)
 
 
 def check_username(data: Union[list, dict], key: str):
@@ -62,14 +70,13 @@ def check_password(data: Union[list, dict], key: str):
             check_password(row, key)
 
 
-def check_phone_number(data: Union[list, dict], keys: list):
+def check_phone(data: Union[list, dict], key: str):
     pattern = re.compile(r"^(0|\+84)(3[2-9]|5[6|8|9]|7[0|6-9]|8[1-5]|9[0-9])[0-9]{7}$")
     if isinstance(data, dict):
-        for key in keys:
-            assert pattern.match(data.get(key))
+        assert pattern.match(data.get(key))
     elif isinstance(data, list):
         for row in data:
-            check_phone_number(row, keys)
+            check_phone(row, key)
 
 
 def check_properties(data: Union[list, dict], required_key: list[str]):

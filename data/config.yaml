@@ -1,0 +1,4 @@
+CSV_FILE_USER: ../data/users.csv
+YAML_USER: ../output/data_user.yaml
+YAML_CUSTOMER: ../output/data_customer.yaml
+CSV_FILE_CUSTOMER: ../data/Customer.csv
