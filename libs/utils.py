@@ -37,23 +37,15 @@ def write_yaml(data, file_path):
 
 def pattern_name(name: str):
     name_pattern = re.compile(r"^[A-Za-z]+$")
-    assert name_pattern.match(name)
+    return name_pattern.match(name)
 
 
-def check_firstname(data: Union[list, dict], key: str):
-    if isinstance(data, dict):
-        pattern_name(data.get(key))
-    elif isinstance(data, list):
-        for row in data:
-            check_firstname(row, key)
+def check_firstname(firstname):
+    assert pattern_name(firstname)
 
 
-def check_lastname(data: Union[list, dict], key: str):
-    if isinstance(data, dict):
-        pattern_name(data.get(key))
-    elif isinstance(data, list):
-        for row in data:
-            check_lastname(row, key)
+def check_lastname(lastname):
+    assert pattern_name(lastname)
 
 
 def check_username(username: str):
@@ -71,23 +63,67 @@ def check_password(password: str):
     assert password_pattern.match(password)
 
 
-def check_phone(data: Union[list, dict], key: str):
-    pattern = re.compile(r"^(0|\+84)(3[2-9]|5[6|8|9]|7[0|6-9]|8[1-5]|9[0-9])[0-9]{7}$")
-    if isinstance(data, dict):
-        assert pattern.match(data.get(key))
-    elif isinstance(data, list):
-        for row in data:
-            check_phone(row, key)
+def check_phone(phone):
+    phone_pattern = re.compile(
+        r"^(0|\+84)(3[2-9]|5[6|8|9]|7[0|6-9]|8[1-5]|9[0-9])[0-9]{7}$"
+    )
+    assert phone_pattern.match(phone)
 
 
-def check_properties(data: Union[list, dict], required_key: list[str]):
-    if isinstance(data, dict):
-        for key in required_key:
-            if not data.get(key):
-                raise ValueError(f"Missing value for {key} in customer data")
-    elif isinstance(data, list):
-        for item in data:
-            check_properties(item, required_key)
+def check_customer_information(customer: dict):
+    if not config.BASE_CUSTOMER.keys() == customer.keys():
+        raise Exception(
+            "Input user [{}] doesn't match format with database".format(customer)
+        )
+    if is_user_exists(customer):
+        logger.info("User [{}] already exists".format(customer), also_console=True)
+        return False
+    check_username(customer.get("FirstName"))
+    check_password(customer.get("LastName"))
+    check_phone(customer.get("Phone"))
+    check_email(customer.get("Email"))
+    return True
+
+
+def is_customer_exists(customer: dict):
+    customers = read_yaml_file(config.DEFAULT_FILE_YAML_CUSTOMER)
+    if isinstance(customer, dict):
+        is_exist = [
+            customer
+            for customer in customers
+            if customer.get("Email") == customer.get("Email")
+            or customer.get("Phone") == customer.get("Phone")
+        ]
+        if is_exist:
+            return True
+
+
+def is_customer_created(customer: Union[dict, list]) -> bool:
+    customers = read_yaml_file(config.DEFAULT_FILE_YAML_CUSTOMER)
+    if isinstance(customer, dict):
+        return customer in customers
+    elif isinstance(customer, list):
+        for customer in customers:
+            if customer not in customers:
+                return False
+        return True
+
+
+def create_customer(customer: Union[list, dict]):
+    customers = read_yaml_file(config.DEFAULT_FILE_YAML_CUSTOMER)
+    if isinstance(customer, dict):
+        if check_customer_information(customer):
+            customers.append(customer)
+            logger.info("User [{}] was created".format(customer), also_console=True)
+    elif isinstance(customer, list):
+        created = []
+        for _customer in customer:
+            if check_customer_information(_customer):
+                created.append(_customer)
+        if created:
+            customers.extend(created)
+            logger.info("Users [{}] were created".format(created), also_console=True)
+    write_yaml(customers, config.DEFAULT_FILE_YAML_CUSTOMER)
 
 
 def is_user_exists(user: dict):

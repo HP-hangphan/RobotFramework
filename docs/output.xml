@@ -1,36 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<robot generator="Robot 7.0.1 (Python 3.11.7 on darwin)" generated="2024-08-23T16:53:30.625662" rpa="false" schemaversion="5">
-<suite id="s1" name="Tests" source="/Users/admin/Documents/Workspace/personal/RobotFramework/tests">
-<suite id="s1-s1" name="Create And Validate User Tests" source="/Users/admin/Documents/Workspace/personal/RobotFramework/tests/create_and_validate_user_tests.robot">
-<test id="s1-s1-t1" name="Create user" line="5">
+<robot generator="Robot 7.0.1 (Python 3.11.9 on darwin)" generated="2024-08-24T11:33:54.054461" rpa="false" schemaversion="5">
+<suite id="s1" name="TestCreateCustomer" source="/Users/dino/Desktop/Project/RobotFramework/tests/TestCreateCustomer.robot">
+<test id="s1-t1" name="Create customer" line="6">
 <kw name="Read Csv File" owner="utils">
-<msg time="2024-08-23T16:53:30.661811" level="INFO">${data} = [{'Username': 'Admin', 'Password': '11111119', 'Email': 'admin123@gmail.com'}, {'Username': 'Username1', 'Password': '123456789', 'Email': 'user123@gmail.com'}]</msg>
+<msg time="2024-08-24T11:33:54.086703" level="INFO">${data} = [{'FirstName': 'Eluna', 'LastName': 'Howell', 'Phone': '0912345678', 'Email': 'Nikki87@gmail.com'}, {'FirstName': 'Rosina', 'LastName': 'Becker', 'Phone': '+84912345678', 'Email': 'Brant86@yahoo.com'}...</msg>
 <var>${data}</var>
-<arg>${DEFAULT_FILE_CSV_USER}</arg>
-<status status="PASS" start="2024-08-23T16:53:30.661547" elapsed="0.000293"/>
+<arg>${DEFAULT_FILE_CSV_CUSTOMER}</arg>
+<status status="PASS" start="2024-08-24T11:33:54.086293" elapsed="0.000437"/>
 </kw>
-<kw name="Create User" owner="utils">
-<msg time="2024-08-23T16:53:30.663400" level="INFO">User [{'Username': 'Admin', 'Password': '11111119', 'Email': 'admin123@gmail.com'}] already exists</msg>
-<msg time="2024-08-23T16:53:30.664046" level="INFO">User [{'Username': 'Username1', 'Password': '123456789', 'Email': 'user123@gmail.com'}] already exists</msg>
+<kw name="Create Customer" owner="utils">
+<msg time="2024-08-24T11:33:54.088201" level="INFO">User [{'FirstName': 'Eluna', 'LastName': 'Howell', 'Phone': '0912345678', 'Email': 'Nikki87@gmail.com'}] already exists</msg>
+<msg time="2024-08-24T11:33:54.088965" level="INFO">User [{'FirstName': 'Rosina', 'LastName': 'Becker', 'Phone': '+84912345678', 'Email': 'Brant86@yahoo.com'}] already exists</msg>
+<msg time="2024-08-24T11:33:54.089565" level="INFO">User [{'FirstName': 'Elsa', 'LastName': 'Ledner', 'Phone': '+84812345678', 'Email': 'Sadie76@hotmail.com'}] already exists</msg>
 <arg>${data}</arg>
-<status status="PASS" start="2024-08-23T16:53:30.661978" elapsed="0.002865"/>
+<status status="PASS" start="2024-08-24T11:33:54.086847" elapsed="0.003086"/>
 </kw>
-<kw name="Is User Created" owner="utils">
-<msg time="2024-08-23T16:53:30.665993" level="INFO">${created} = True</msg>
+<kw name="Is Customer Created" owner="utils">
+<msg time="2024-08-24T11:33:54.090455" level="INFO">${created} = True</msg>
 <var>${created}</var>
 <arg>${data}</arg>
-<status status="PASS" start="2024-08-23T16:53:30.665135" elapsed="0.000881"/>
+<status status="PASS" start="2024-08-24T11:33:54.090085" elapsed="0.000450"/>
 </kw>
 <kw name="Should Be True" owner="BuiltIn">
 <arg>${created}</arg>
 <doc>Fails if the given condition is not true.</doc>
-<status status="PASS" start="2024-08-23T16:53:30.666178" elapsed="0.000319"/>
+<status status="PASS" start="2024-08-24T11:33:54.090735" elapsed="0.000170"/>
 </kw>
-<status status="PASS" start="2024-08-23T16:53:30.660950" elapsed="0.005950"/>
+<status status="PASS" start="2024-08-24T11:33:54.085764" elapsed="0.005263"/>
 </test>
-<status status="PASS" start="2024-08-23T16:53:30.645137" elapsed="0.022304"/>
-</suite>
-<status status="PASS" start="2024-08-23T16:53:30.627139" elapsed="0.040825"/>
+<status status="PASS" start="2024-08-24T11:33:54.055311" elapsed="0.036019"/>
 </suite>
 <statistics>
 <total>
@@ -39,8 +37,7 @@
 <tag>
 </tag>
 <suite>
-<stat pass="1" fail="0" skip="0" id="s1" name="Tests">Tests</stat>
-<stat pass="1" fail="0" skip="0" id="s1-s1" name="Create And Validate User Tests">Tests.Create And Validate User Tests</stat>
+<stat pass="1" fail="0" skip="0" id="s1" name="TestCreateCustomer">TestCreateCustomer</stat>
 </suite>
 </statistics>
 <errors>

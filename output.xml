@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 5.0.1 (Python 3.10.12 on darwin)" generated="20240824 14:07:44.040" rpa="false" schemaversion="3">
+<suite id="s1" name="TestCreateCustomer" source="/Users/dino/Desktop/Project/RobotFramework/tests/TestCreateCustomer.robot">
+<test id="s1-t1" name="Create customer" line="6">
+<kw name="Read Csv File" library="utils">
+<var>${data}</var>
+<arg>${DEFAULT_FILE_CSV_CUSTOMER}</arg>
+<msg timestamp="20240824 14:07:44.082" level="INFO">${data} = [{'FirstName': 'Eluna', 'LastName': 'Howell', 'Phone': '0912345678', 'Email': 'Nikki87@gmail.com'}, {'FirstName': 'Rosina', 'LastName': 'Becker', 'Phone': '+84912345678', 'Email': 'Brant86@yahoo.com'}...</msg>
+<status status="PASS" starttime="20240824 14:07:44.081" endtime="20240824 14:07:44.084"/>
+</kw>
+<kw name="Create Customer" library="utils">
+<arg>${data}</arg>
+<msg timestamp="20240824 14:07:44.087" level="INFO">User [{'FirstName': 'Eluna', 'LastName': 'Howell', 'Phone': '0912345678', 'Email': 'Nikki87@gmail.com'}] already exists</msg>
+<msg timestamp="20240824 14:07:44.089" level="INFO">User [{'FirstName': 'Rosina', 'LastName': 'Becker', 'Phone': '+84912345678', 'Email': 'Brant86@yahoo.com'}] already exists</msg>
+<msg timestamp="20240824 14:07:44.091" level="INFO">User [{'FirstName': 'Elsa', 'LastName': 'Ledner', 'Phone': '+84812345678', 'Email': 'Sadie76@hotmail.com'}] already exists</msg>
+<status status="PASS" starttime="20240824 14:07:44.085" endtime="20240824 14:07:44.092"/>
+</kw>
+<kw name="Is Customer Created" library="utils">
+<var>${created}</var>
+<arg>${data}</arg>
+<msg timestamp="20240824 14:07:44.093" level="INFO">${created} = True</msg>
+<status status="PASS" starttime="20240824 14:07:44.092" endtime="20240824 14:07:44.094"/>
+</kw>
+<kw name="Should Be True" library="BuiltIn">
+<arg>${created}</arg>
+<doc>Fails if the given condition is not true.</doc>
+<status status="PASS" starttime="20240824 14:07:44.094" endtime="20240824 14:07:44.095"/>
+</kw>
+<status status="PASS" starttime="20240824 14:07:44.079" endtime="20240824 14:07:44.095"/>
+</test>
+<status status="PASS" starttime="20240824 14:07:44.044" endtime="20240824 14:07:44.096"/>
+</suite>
+<statistics>
+<total>
+<stat pass="1" fail="0" skip="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat pass="1" fail="0" skip="0" id="s1" name="TestCreateCustomer">TestCreateCustomer</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>
