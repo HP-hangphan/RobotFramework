@@ -68,10 +68,10 @@ def check_phone(phone):
 def check_customer_information(customer: dict):
     if not config.BASE_CUSTOMER.keys() == customer.keys():
         raise Exception(
-            "Input user [{}] doesn't match format with database".format(customer)
+            "Input customer [{}] doesn't match format with database".format(customer)
         )
     if is_user_exists(customer):
-        logger.info("User [{}] already exists".format(customer), also_console=True)
+        logger.info("Customer [{}] already exists".format(customer), also_console=True)
         return False
     check_name(customer.get("FirstName"))
     check_name(customer.get("LastName"))
@@ -109,7 +109,7 @@ def create_customer(customer: Union[list, dict]):
     if isinstance(customer, dict):
         if check_customer_information(customer):
             customers.append(customer)
-            logger.info("User [{}] was created".format(customer), also_console=True)
+            logger.info("Customer [{}] was created".format(customer), also_console=True)
     elif isinstance(customer, list):
         created = []
         for _customer in customer:
@@ -117,7 +117,7 @@ def create_customer(customer: Union[list, dict]):
                 created.append(_customer)
         if created:
             customers.extend(created)
-            logger.info("Users [{}] were created".format(created), also_console=True)
+            logger.info("Customers [{}] were created".format(created), also_console=True)
     write_yaml(customers, config.DEFAULT_FILE_YAML_CUSTOMER)
 
 
