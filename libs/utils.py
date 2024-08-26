@@ -40,13 +40,8 @@ def pattern_name(name: str):
     return name_pattern.match(name)
 
 
-def check_firstname(firstname):
-    assert pattern_name(firstname)
-
-
-def check_lastname(lastname):
-    assert pattern_name(lastname)
-
+def check_name(name):
+    assert pattern_name(name)
 
 def check_username(username: str):
     username_pattern = re.compile(r"^[a-zA-Z0-9_]{3,15}$")
@@ -78,8 +73,8 @@ def check_customer_information(customer: dict):
     if is_user_exists(customer):
         logger.info("User [{}] already exists".format(customer), also_console=True)
         return False
-    check_username(customer.get("FirstName"))
-    check_password(customer.get("LastName"))
+    check_name(customer.get("FirstName"))
+    check_name(customer.get("LastName"))
     check_phone(customer.get("Phone"))
     check_email(customer.get("Email"))
     return True
